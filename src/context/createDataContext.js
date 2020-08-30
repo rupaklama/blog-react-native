@@ -6,7 +6,7 @@ import React, { useReducer } from 'react';
 // automating context creation
 
 // passing three things that acutally need to be customized,
-// any time we create another context
+// any time we create another context object
 // actions is an objects that has all different callback functions to
 // dispatch an action & update our state
 export default (reducer, actions, initialState) => {
@@ -31,23 +31,26 @@ export default (reducer, actions, initialState) => {
     const boundActions = {};
     for (let key in actions) {
       // key === 'addPost'
-      // boundActions[key] === boundActions.addPost
-      // actions[key] reference to { return () => {} } & calling with dispatch
+      // boundActions[key] === addPost
+      // actions[key] or addpost === reference to { return () => {} } & calling it with dispatch
       boundActions[key] = actions[key](dispatch) 
     }
 
     // actions === { addPost: (dispatch) => { return () => {} } } from BlogContext.js
     // so we are going to loop through action object, 
     // take object key which is a function & call it with dispatch that's going to 
-    // give us back - return function { return () => {} }
-    // set the return function - { return () => {} } in our boundActions object &
+    // give us back - return function { return () => {} } to do something
+    // pass & store any values from the return function - { return () => {} } 
+    // into our boundActions object &
     // Finally, pass boundActions object to our provider value prop
+    // which will let all our children components to make changes to
+    // related context's state
 
     // can't pass an object {} into value, react can't render object directly
     // have to use function like Flatlist or map...
-    return (
-      <Context.Provider value={{ state: state, ...boundActions }}>{children}</Context.Provider>
-    );
+    return ( // { state, ...boundActions } is our state & action objects by dispatch
+      <Context.Provider value={{ state, ...boundActions }}>{children}</Context.Provider>
+    ); 
   };
 
   return { Context, Provider };

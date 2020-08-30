@@ -4,6 +4,9 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
 import IndexScreen from './src/screens/IndexScreen';
+import ShowScreen from './src/screens/ShowScreen';
+import CreateScreen from './src/screens/CreateScreen';
+
 import { Provider as BlogProvider } from './src/context/BlogContext';
 
 // creating Stack navigator object to create routes
@@ -12,6 +15,8 @@ const navigator = createStackNavigator(
     // first arg is the route config object
     // when using Stack navigator, at least need to have one screen
     Index: IndexScreen,
+    Show: ShowScreen,
+    Create: CreateScreen
   },
     // as second arg, passing another object
   {
