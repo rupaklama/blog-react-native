@@ -6,6 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import IndexScreen from './src/screens/IndexScreen';
 import ShowScreen from './src/screens/ShowScreen';
 import CreateScreen from './src/screens/CreateScreen';
+import EditScreen from './src/screens/EditScreen';
 
 import { Provider as BlogProvider } from './src/context/BlogContext';
 
@@ -16,7 +17,8 @@ const navigator = createStackNavigator(
     // when using Stack navigator, at least need to have one screen
     Index: IndexScreen,
     Show: ShowScreen,
-    Create: CreateScreen
+    Create: CreateScreen,
+    Edit: EditScreen
   },
     // as second arg, passing another object
   {

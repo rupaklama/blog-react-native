@@ -4,8 +4,13 @@ import createDataContext from './createDataContext';
 const postReducer = (state, action) => {
   // action is object, type is operation with that object
   switch (action.type) {
+    case 'edit_post':
+      return state.map((post) => {
+        return post.id === action.payload.id
+        ? action.payload : post
+      })
     case 'delete_post':
-      return state.filter((post) => post.id !== action.payload)
+      return state.filter(post => post.id !== action.payload);
     case 'add_post':
       // adding new object into our array with the previous arrays
       return [
@@ -13,7 +18,7 @@ const postReducer = (state, action) => {
         {
           id: Math.floor(Math.random() * 1000001),
           title: action.payload.title,
-          content: action.payload.content
+          content: action.payload.content,
         },
       ];
     default:
@@ -30,16 +35,29 @@ const addPost = dispatch => {
   // args are coming from our component & pass those through dispatch func
   return (title, content, callback) => {
     dispatch({ type: 'add_post', payload: { title: title, content: content } });
-    // after successfull dispatch, only then call callback
+    // after successful dispatch, only then call callback
     callback();
   };
 };
 
 // to delete post
 const deletePost = dispatch => {
-  // passin id arg from payload that we want to delete
-  return (id) => {
-    dispatch({ type: 'delete_post', payload: id })
+  // passing id arg from payload that we want to delete
+  return id => {
+    dispatch({ type: 'delete_post', payload: id });
+  };
+};
+
+// to edit post
+const editPost = dispatch => {
+  return (id, title, content, callback) => {
+    dispatch({
+      type: 'edit_post',
+      payload: { id: id, title: title, content: content },
+    });
+    if (callback) {
+      callback()
+    }
   };
 };
 
@@ -49,9 +67,11 @@ export const { Context, Provider } = createDataContext(
   postReducer,
   {
     addPost,
-    deletePost
+    deletePost,
+    editPost
   },
-  []
+  // default value to start with
+  [{ title: 'Test Post', content: 'default value', id: 1 }]
 );
 // this will give us back Context & Provider which will make all our
 // data available to other components inside our application
